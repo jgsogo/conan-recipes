@@ -1,0 +1,34 @@
+name: Keep RT alive
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    # Trigger every sunday
+    - cron: "* * * * 0"
+jobs:
+  keep_rt_alive:
+    runs-on: ubuntu-latest
+    container:
+      image: conanio/gcc11-ubuntu16.04:1.44.0
+    env:
+      CONAN_USER_HOME: /home/conan
+    steps:
+      - name: Configure Conan
+        run: |
+          conan config set general.revisions_enabled=1
+          conan config install https://github.com/conan-io/conanclientcert.git
+          conan --version
+          conan config home
+
+      - name: Connect to remote
+        run: |
+          conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
+          conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
+
+      - name: Create package
+        working-directory: /home/conan
+        run: |
+          conan new keep_rt_alive/version@jgsogo/scheduled
+          conan create conanfile.py
+          conan upload --confirm --all --remote sogo keep_rt_alive/version@jgsogo/scheduled
