@@ -38,41 +38,22 @@ jobs:
       - name: Export all recipes
         working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
-          pwd
-          ls -la $(pwd)
-          ls -la $(pwd)/recipes
-          ls -la $(pwd)/recipes/composite
           for d in recipes/* ; do
-            python .github/scripts/parse_config_yml.py /home/conan/${{ github.event.repository.name }}/$d/config.yml | while read -r folder version ; do 
-              conan export "/home/conan/${{ github.event.repository.name }}/$d/$folder/conanfile.py" $version@jgsogo/stable
+            python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
+              conan export "$d/$folder/conanfile.py" $version@jgsogo/stable
             done
           done
 
-      - name: Install all recipes
+      - name: Build all recipes
         working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           for d in recipes/* ; do
-            python .github/scripts/parse_config_yml.py /home/conan/${{ github.event.repository.name }}/$d/config.yml | while read -r folder version ; do 
-              conan create "/home/conan/${{ github.event.repository.name }}/$d/$folder/conanfile.py" $version@jgsogo/stable --build=missing
+            python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
+              conan create "$d/$folder/conanfile.py" $version@jgsogo/stable --build=missing
             done
           done
 
-      - name: Build dependencies
-        working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
+      - name: Clean cache
         run: |
-          conan lock create --profile:host=cpp20 --profile:build=default --lockfile=../lockfile.json --lockfile-out=lockfile.json --name=composite --version=0.1 ../conanfile.txt --build --update
-          conan install --lockfile=lockfile.json ../conanfile.txt --build=missing --generator=virtualenv
           conan remove "*" --builds --force
           conan remove "*" --src --force
-
-      - name: Build the project
-        working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
-        run: |
-          . /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20/activate.sh
-          cmake .. -DCMAKE_MODULE_PATH=$(pwd) -DCMAKE_TOOLCHAIN_FILE=$CONAN_CMAKE_TOOLCHAIN_FILE
-          make
-
-      - name: Run tests
-        working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
-        run: |
-          tests/unit_tests
