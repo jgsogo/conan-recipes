@@ -29,6 +29,6 @@ jobs:
       - name: Create package
         working-directory: /home/conan
         run: |
-          conan new keep_rt_alive/version@jgsogo/scheduled
+          conan new --header keep_rt_alive/version@jgsogo/scheduled
           conan create conanfile.py keep_rt_alive/version@jgsogo/scheduled
           conan upload --confirm --all --remote sogo keep_rt_alive/version@jgsogo/scheduled
