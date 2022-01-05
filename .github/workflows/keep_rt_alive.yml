@@ -1,8 +1,5 @@
 name: Keep RT alive
 on:
-  push:
-    branches:
-      - master
   schedule:
     # Trigger every sunday
     - cron: "* * * * 0"
