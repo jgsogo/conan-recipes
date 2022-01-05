@@ -39,6 +39,15 @@ jobs:
         working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           for d in recipes/* ; do
+            python .github/scripts/parse_config_yml.py /home/conan/${{ github.event.repository.name }}/$d/config.yml | while read -r folder version ; do 
+              conan export "/home/conan/${{ github.event.repository.name }}/$d/$folder/conanfile.py" $version@jgsogo/stable
+            done
+          done
+
+      - name: Install all recipes
+        working-directory: /home/conan/${{ github.event.repository.name }}
+        run: |
+          for d in recipes/* ; do
             python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
               conan export "$d/$folder/conanfile.py" $version@jgsogo/stable
             done
