@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload to remote
         run: |
-          conan upload --all --remote sogo "*"
+          conan upload --confirm --parallel --all --remote sogo "*"
 
       - name: Clean cache
         run: |
