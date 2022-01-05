@@ -1,0 +1,57 @@
+name: Full CI
+on: [push]
+jobs:
+  build_missing:
+    runs-on: ubuntu-latest
+    container:
+      image: conanio/gcc11-ubuntu16.04:1.44.0
+    env:
+      CONAN_USER_HOME: /home/conan
+    steps:
+      - name: Check out repository code
+        # uses: actions/checkout@v2
+        working-directory: /home/conan
+        run: |
+          git clone https://github.com/${{ github.repository }}.git
+          cd ${{ github.event.repository.name }}
+          git checkout ${{ github.ref_name }}
+
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          key: conan-cache-${{ github.repository }}
+          path: /home/conan/.conan
+
+      - name: Configure Conan
+        run: |
+          conan config set general.revisions_enabled=1
+          conan config install https://github.com/conan-io/conanclientcert.git
+          conan --version
+          conan config home
+
+      - name: Prepare deps
+        working-directory: /home/conan/${{ github.event.repository.name }}
+        run: |
+          cp -r .conan/profiles /home/conan/.conan
+          conan profile list
+          mkdir cmake-build-cpp20
+
+      - name: Build dependencies
+        working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
+        run: |
+          conan lock create --profile:host=cpp20 --profile:build=default --lockfile=../lockfile.json --lockfile-out=lockfile.json --name=composite --version=0.1 ../conanfile.txt --build --update
+          conan install --lockfile=lockfile.json ../conanfile.txt --build=missing --generator=virtualenv
+          conan remove "*" --builds --force
+          conan remove "*" --src --force
+
+      - name: Build the project
+        working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
+        run: |
+          . /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20/activate.sh
+          cmake .. -DCMAKE_MODULE_PATH=$(pwd) -DCMAKE_TOOLCHAIN_FILE=$CONAN_CMAKE_TOOLCHAIN_FILE
+          make
+
+      - name: Run tests
+        working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
+        run: |
+          tests/unit_tests
