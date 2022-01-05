@@ -29,12 +29,18 @@ jobs:
           conan --version
           conan config home
 
-      - name: Prepare deps
+      - name: Copy configuration to cache
         working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           cp -r .conan/profiles /home/conan/.conan
           conan profile list
-          mkdir cmake-build-cpp20
+
+      - name: Export all recipes
+        working-directory: /home/conan/${{ github.event.repository.name }}
+        run: |
+          for d in recipes/*/ ; do
+            conan export "recipes/$d/conanfile.py" name/version@jgsogo/stable
+          done
 
       - name: Build dependencies
         working-directory: /home/conan/${{ github.event.repository.name }}/cmake-build-cpp20
