@@ -8,4 +8,4 @@ find_package(composite REQUIRED)
 
 add_executable(${PROJECT_NAME} test_package.cpp)
 target_link_libraries(${PROJECT_NAME} composite::composite)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
