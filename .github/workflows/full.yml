@@ -32,7 +32,7 @@ jobs:
       - name: Connect to remote
         run: |
           conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
-          conan user -r sogo -p ${{secret.RT_TOKEN}} ${{secret.RT_USERNAME}}
+          conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
       - name: Copy configuration to cache
         working-directory: /home/conan/${{ github.event.repository.name }}
