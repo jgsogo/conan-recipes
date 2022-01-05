@@ -39,6 +39,9 @@ jobs:
         working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           pwd
+          ls -la $(pwd)
+          ls -la $(pwd)/recipes
+          ls -la $(pwd)/recipes/composite
           for d in recipes/* ; do
             python .github/scripts/parse_config_yml.py /home/conan/${{ github.event.repository.name }}/$d/config.yml | while read -r folder version ; do 
               conan export "/home/conan/${{ github.event.repository.name }}/$d/$folder/conanfile.py" $version@jgsogo/stable
