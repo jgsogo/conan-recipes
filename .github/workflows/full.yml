@@ -1,7 +1,7 @@
 name: Full CI
 on: [push]
 jobs:
-  build_missing:
+  build_all_recipes:
     runs-on: ubuntu-latest
     container:
       image: conanio/gcc11-ubuntu16.04:1.44.0
