@@ -22,15 +22,15 @@ class CompositeConan(ConanFile):
     @property
     def _compilers_minimum_version(self):
         return {
-            "gcc": "7",
-            "clang": "5",
-            "apple-clang": "10",
-            "Visual Studio": "15.7",
+            "gcc": "8",
+            "clang": "9",
+            "apple-clang": "12",
+            "Visual Studio": "16.11",
         }
 
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
-            tools.check_min_cppstd(self, "17")
+            tools.check_min_cppstd(self, "20")
 
         def lazy_lt_semver(v1, v2):
             lv1 = [int(v) for v in v1.split(".")]
@@ -40,7 +40,7 @@ class CompositeConan(ConanFile):
 
         minimum_version = self._compilers_minimum_version.get(str(self.settings.compiler), False)
         if minimum_version and lazy_lt_semver(str(self.settings.compiler.version), minimum_version):
-            raise ConanInvalidConfiguration("{} requires C++17, which your compiler does not support.".format(self.name))
+            raise ConanInvalidConfiguration("{} requires C++20, which your compiler does not support.".format(self.name))
 
     def package_id(self):
         self.info.header_only()
