@@ -80,6 +80,7 @@ jobs:
           done
 
       - name: Upload to remote
+        if: github.ref == 'refs/heads/master'
         run: |
           conan upload --confirm --parallel --all --remote sogo "*"
 
