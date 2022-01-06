@@ -20,8 +20,10 @@ jobs:
     steps:
       - name: Upgrade Git version
         run: |
+          sudo apt-get update
           sudo apt-get install software-properties-common -y
           sudo add-apt-repository ppa:git-core/ppa -y
+          sudo apt-get update
           sudo apt-get install git -y
 
       - uses: actions/checkout@v2
