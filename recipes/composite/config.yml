@@ -1,3 +1,5 @@
 versions:
-  "cci.20220105":
+  7eea224e2116a8322a1307ad976123a4432f840d:
+    folder: all
+  cci.20220105:
     folder: all

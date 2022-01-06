@@ -1,4 +1,7 @@
 sources:
-  "cci.20220105":
-    url: "https://github.com/jgsogo/composite/archive/c5f8ab2ee7c2843b627f3f56bfda94bb5eb129ef.zip"
-    sha256: "007c2deab78372f8b502660550830ee1029cf83354f71d593f47b714b605928d"
+  7eea224e2116a8322a1307ad976123a4432f840d:
+    sha256: d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed
+    url: https://github.com/jgsogo/composite/archive/refs/tags/7eea224e2116a8322a1307ad976123a4432f840d.tar.gz
+  cci.20220105:
+    sha256: 007c2deab78372f8b502660550830ee1029cf83354f71d593f47b714b605928d
+    url: https://github.com/jgsogo/composite/archive/c5f8ab2ee7c2843b627f3f56bfda94bb5eb129ef.zip
