@@ -14,13 +14,10 @@ jobs:
     env:
       CONAN_USER_HOME: /home/conan
     steps:
-      - name: Check out repository code
-        # uses: actions/checkout@v2
-        working-directory: /home/conan
-        run: |
-          git clone https://github.com/${{ github.repository }}.git
-          cd ${{ github.event.repository.name }}
-          git checkout ${{ github.ref_name }}
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+        with:
+          path: /home/conan/${{ github.event.repository.name }}
 
       - name: Cache Conan packages
         uses: actions/cache@v2
