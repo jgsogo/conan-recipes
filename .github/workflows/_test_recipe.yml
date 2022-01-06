@@ -1,0 +1,70 @@
+---
+# Test the recipe that belongs to a given repository
+name: "Test recipe"
+
+on:
+  workflow_call:
+    inputs:
+      docker_image:
+        type: string
+        required: false
+        default: conanio/gcc11-ubuntu16.04:1.44.0
+      repository:
+        type: string
+        required: true
+      github_sha:
+        type: string
+        required: true
+      github_ref_name:
+        type: string
+        required: true
+
+
+env:
+  CONAN_USER_HOME: /home/conan
+
+defaults:
+  run:
+    working-directory: /home/conan
+
+jobs:
+  test_conan_package:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ inputs.docker_image }}
+    env:
+      CONAN_USER_HOME: /home/conan
+    steps:
+      - name: Upgrade Git version
+        working-directory: /home/conan
+        run: |
+          sudo apt-get update
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:git-core/ppa -y
+          sudo apt-get update
+          sudo apt-get install git -y
+
+      - name: Check out repository code
+        uses: rodrigorodriguescosta/checkout@main  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.github_sha }}
+          path: /home/conan/library
+
+      - name: Check out recipes repository
+        uses: rodrigorodriguescosta/checkout@main  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+        with:
+          repository: jgsogo/conan-recipes
+          path: /home/conan/conan-recipes
+
+      - name: Add version to conandata.yml
+        run: |
+            echo "  \"${{ github.sha }}\":" >> conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
+            echo "    url: https://github.com/${{ inputs.repository }}/archive/${{ inputs.github_sha }}.zip" >> conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
+            cat conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
+
+      - name: Run create
+        run: |
+          for profile in conan-recipes/.conan/profiles/* ; do
+            conan create conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conanfile.py ${{ inputs.github_ref_name }}/${{ inputs.github_sha }}@jgsogo/testing --profile:host=$profile --profile:build=default
+          done
