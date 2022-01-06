@@ -19,6 +19,7 @@ jobs:
       image: conanio/gcc11-ubuntu16.04:1.44.0
     steps:
       - name: Upgrade Git version
+        working-directory: git-install
         run: |
           sudo apt-get update
           sudo apt-get install unzip -y
