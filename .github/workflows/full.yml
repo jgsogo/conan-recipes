@@ -20,6 +20,7 @@ jobs:
     steps:
       - name: Upgrade Git version
         run: |
+          sudo apt-get update
           sudo apt-get install unzip -y
           wget https://github.com/git/git/archive/v2.34.1.zip -O git.zip
           unzip git.zip
