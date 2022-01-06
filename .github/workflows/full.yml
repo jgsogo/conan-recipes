@@ -12,6 +12,10 @@ on:
 env:
   CONAN_USER_HOME: /home/conan
 
+defaults:
+  run:
+    working-directory: /home/conan
+
 jobs:
   build_all_recipes:
     runs-on: ubuntu-latest
