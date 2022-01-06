@@ -1,0 +1,57 @@
+---
+# To be triggered on release published. It will create a PR with the new version
+name: "Published Release"
+
+on:
+  workflow_call:
+    inputs:
+      github_sha:
+        type: string
+        required: true
+      github_ref_name:
+        type: string
+        required: true
+      github_repository:
+        type: string
+        required: true
+    secrets:
+      APP_RECIPES_APP_ID:
+        required: true
+      APP_RECIPES_PRIVATE_KEY:
+        required: true
+
+jobs:
+  pr_to_recipes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Print information"
+        run: |
+          echo "github.ref_name: ${{ github.ref_name }}"
+          echo "github.sha: ${{ github.sha }}"
+
+      - name: Checkout recipes repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'jgsogo/conan-recipes'
+          ref: 'master'
+
+      - name: Add version to repo files
+        run: |
+          echo "Not implemented yet" >> README.md
+          git diff
+
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.APP_RECIPES_APP_ID }}
+          private_key: ${{ secrets.APP_RECIPES_PRIVATE_KEY }}
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: "[${{ github.repository }}] Add version ${{ github.ref_name }}"
+          branch: "${{ github.repository }}-${{ github.ref_name }}"
+          title: "[${{ github.repository }}] Add version ${{ github.ref_name }}"
+          body: "[**${{ github.repository }}**](https://github.com/${{ github.repository }}): add version `${{ github.ref_name }}`."
+          reviewers: "jgsogo"
+          token: ${{ steps.generate-token.outputs.token }}

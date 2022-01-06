@@ -1,3 +1,5 @@
+---
+# Export and build-missing all recipes
 name: Full CI
 on:
   push:
@@ -6,21 +8,32 @@ on:
   pull_request:
     branches:
       - master
+
+env:
+  CONAN_USER_HOME: /home/conan
+
+defaults:
+  run:
+    working-directory: /home/conan/conan-recipes
+
 jobs:
   build_all_recipes:
     runs-on: ubuntu-latest
     container:
       image: conanio/gcc11-ubuntu16.04:1.44.0
-    env:
-      CONAN_USER_HOME: /home/conan
     steps:
-      - name: Check out repository code
-        # uses: actions/checkout@v2
+      - name: Upgrade Git version
         working-directory: /home/conan
         run: |
-          git clone https://github.com/${{ github.repository }}.git
-          cd ${{ github.event.repository.name }}
-          git checkout ${{ github.ref_name }}
+          sudo apt-get update
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:git-core/ppa -y
+          sudo apt-get update
+          sudo apt-get install git -y
+
+      - uses: rodrigorodriguescosta/checkout@main  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+        with:
+          path: /home/conan/conan-recipes
 
       - name: Cache Conan packages
         uses: actions/cache@v2
@@ -40,14 +53,12 @@ jobs:
           conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
           conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
-      - name: Copy configuration to cache
-        working-directory: /home/conan/${{ github.event.repository.name }}
-        run: |
-          cp -r .conan/profiles /home/conan/.conan
-          conan profile list
+      #- name: Copy configuration to cache
+      #  run: |
+      #    cp -r .conan/profiles /home/conan/.conan
+      #    conan profile list
 
       - name: Export all recipes
-        working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           for d in recipes/* ; do
             python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
@@ -56,7 +67,6 @@ jobs:
           done
 
       - name: Build all recipes
-        working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           for profile in .conan/profiles/* ; do
             for d in recipes/* ; do
