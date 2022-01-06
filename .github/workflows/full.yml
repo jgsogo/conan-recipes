@@ -14,7 +14,7 @@ env:
 
 defaults:
   run:
-    working-directory: /home/conan
+    working-directory: /home/conan/conan-recipes
 
 jobs:
   build_all_recipes:
@@ -31,6 +31,8 @@ jobs:
           sudo apt-get install git -y
 
       - uses: actions/checkout@v2
+        with:
+          path: /home/conan/conan-recipes
 
       - name: Cache Conan packages
         uses: actions/cache@v2
