@@ -57,6 +57,17 @@ jobs:
           repository: jgsogo/conan-recipes
           path: /home/conan/conan-recipes
 
+      - name: Configure Conan
+        run: |
+          conan config set general.revisions_enabled=1
+          conan config install https://github.com/conan-io/conanclientcert.git
+          conan --version
+          conan config home
+
+      - name: Connect to remote
+        run: |
+          conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
+          
       - name: Add version to conandata.yml
         run: |
             echo "  \"${{ github.sha }}\":" >> conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
