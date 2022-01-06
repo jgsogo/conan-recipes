@@ -39,7 +39,6 @@ jobs:
       - name: Add version to repo files
         run: |
           python .github/scripts/add_version.py --library=${{ inputs.library_name }} --version=${{ inputs.github_sha }}
-          echo "Not implemented yet" >> README.md
           git diff
 
       - uses: tibdex/github-app-token@v1
