@@ -9,10 +9,6 @@ on:
     branches:
       - master
 
-defaults:
-  run:
-    working-directory: /home/conan/conan-recipes
-
 env:
   CONAN_USER_HOME: /home/conan
 
@@ -24,8 +20,6 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v2
-        with:
-          path: /home/conan/conan-recipes
 
       - name: Cache Conan packages
         uses: actions/cache@v2
@@ -45,10 +39,10 @@ jobs:
           conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
           conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
-      - name: Copy configuration to cache
-        run: |
-          cp -r .conan/profiles /home/conan/.conan
-          conan profile list
+      #- name: Copy configuration to cache
+      #  run: |
+      #    cp -r .conan/profiles /home/conan/.conan
+      #    conan profile list
 
       - name: Export all recipes
         run: |
