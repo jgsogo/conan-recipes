@@ -23,6 +23,7 @@ jobs:
       image: conanio/gcc11-ubuntu16.04:1.44.0
     steps:
       - name: Upgrade Git version
+        working-directory: /home/conan
         run: |
           sudo apt-get update
           sudo apt-get install software-properties-common -y
