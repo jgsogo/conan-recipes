@@ -15,7 +15,7 @@ on:
       github_sha:
         type: string
         required: true
-      github_ref_name:
+      library_name:
         type: string
         required: true
 
@@ -70,12 +70,12 @@ jobs:
           
       - name: Add version to conandata.yml
         run: |
-            echo "  \"${{ github.sha }}\":" >> conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
-            echo "    url: https://github.com/${{ inputs.repository }}/archive/${{ inputs.github_sha }}.zip" >> conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
-            cat conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conandata.yml
+            echo "  \"${{ github.sha }}\":" >> conan-recipes/recipes/${{ inputs.library_name }}/all/conandata.yml
+            echo "    url: https://github.com/${{ inputs.repository }}/archive/${{ inputs.github_sha }}.zip" >> conan-recipes/recipes/${{ inputs.library_name }}/all/conandata.yml
+            cat conan-recipes/recipes/${{ inputs.library_name }}/all/conandata.yml
 
       - name: Run create
         run: |
           for profile in conan-recipes/.conan/profiles/* ; do
-            conan create conan-recipes/recipes/${{ inputs.github_ref_name }}/all/conanfile.py ${{ inputs.github_ref_name }}/${{ inputs.github_sha }}@jgsogo/testing --profile:host=$profile --profile:build=default
+            conan create conan-recipes/recipes/${{ inputs.library_name }}/all/conanfile.py ${{ inputs.library_name }}/${{ inputs.github_sha }}@jgsogo/testing --profile:host=$profile --profile:build=default
           done

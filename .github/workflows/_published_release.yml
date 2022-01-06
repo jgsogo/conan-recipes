@@ -8,10 +8,10 @@ on:
       github_sha:
         type: string
         required: true
-      github_ref_name:
+      library_name:
         type: string
         required: true
-      github_repository:
+      repository:
         type: string
         required: true
     secrets:
@@ -26,8 +26,9 @@ jobs:
     steps:
       - name: "Print information"
         run: |
-          echo "github.ref_name: ${{ github.ref_name }}"
-          echo "github.sha: ${{ github.sha }}"
+          echo "github_sha: ${{ inputs.github_sha }}"
+          echo "library_name: ${{ inputs.library_name }}"
+          echo "repository: ${{ inputs.repository }}"
 
       - name: Checkout recipes repository
         uses: actions/checkout@v2
@@ -37,6 +38,7 @@ jobs:
 
       - name: Add version to repo files
         run: |
+          python .github/scripts/add_version.py --name=${{ inputs.library_name }} --version=${{ inputs.github_sha }}
           echo "Not implemented yet" >> README.md
           git diff
 
@@ -49,9 +51,9 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: "[${{ github.repository }}] Add version ${{ github.ref_name }}"
-          branch: "${{ github.repository }}-${{ github.ref_name }}"
-          title: "[${{ github.repository }}] Add version ${{ github.ref_name }}"
-          body: "[**${{ github.repository }}**](https://github.com/${{ github.repository }}): add version `${{ github.ref_name }}`."
+          commit-message: "[${{ inputs.library_name }}] Add version ${{ inputs.github_sha }}"
+          branch: "${{ inputs.library_name }}-${{ inputs.github_sha }}"
+          title: "[${{ inputs.library_name }}] Add version ${{ inputs.github_sha }}"
+          body: "[**${{ inputs.library_name }}**](https://github.com/${{ inputs.repository }}): add version `${{ inputs.github_sha }}`."
           reviewers: "jgsogo"
           token: ${{ steps.generate-token.outputs.token }}
