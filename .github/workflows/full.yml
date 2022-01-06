@@ -18,6 +18,15 @@ jobs:
     container:
       image: conanio/gcc11-ubuntu16.04:1.44.0
     steps:
+      - name: Upgrade Git version
+        run: |
+          wget https://github.com/git/git/archive/v2.34.1.zip -O git.zip
+          unzip git.zip
+          cd git-*
+          make prefix=/usr/local all
+          sudo make prefix=/usr/local install
+          git --version
+
       - uses: actions/checkout@v2
 
       - name: Cache Conan packages
