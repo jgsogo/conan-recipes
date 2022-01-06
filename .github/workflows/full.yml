@@ -6,13 +6,19 @@ on:
   pull_request:
     branches:
       - master
+
+defaults:
+  run:
+    working-directory: /home/conan/${{ github.event.repository.name }}
+
+env:
+  CONAN_USER_HOME: /home/conan
+
 jobs:
   build_all_recipes:
     runs-on: ubuntu-latest
     container:
       image: conanio/gcc11-ubuntu16.04:1.44.0
-    env:
-      CONAN_USER_HOME: /home/conan
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v2
@@ -38,13 +44,11 @@ jobs:
           conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
       - name: Copy configuration to cache
-        working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           cp -r .conan/profiles /home/conan/.conan
           conan profile list
 
       - name: Export all recipes
-        working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           for d in recipes/* ; do
             python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
@@ -53,7 +57,6 @@ jobs:
           done
 
       - name: Build all recipes
-        working-directory: /home/conan/${{ github.event.repository.name }}
         run: |
           for profile in .conan/profiles/* ; do
             for d in recipes/* ; do
