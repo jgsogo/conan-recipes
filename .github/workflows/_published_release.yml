@@ -41,14 +41,14 @@ jobs:
           python .github/scripts/add_version.py --library=${{ inputs.library_name }} --version=${{ inputs.github_sha }}
           git diff
 
-      - uses: tibdex/github-app-token@v1
+      - uses: tibdex/github-app-token@7ce9ffdcdeb2ba82b01b51d6584a6a85872336d4
         id: generate-token
         with:
           app_id: ${{ secrets.APP_RECIPES_APP_ID }}
           private_key: ${{ secrets.APP_RECIPES_PRIVATE_KEY }}
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@dcd5fd746d53dd8de555c0f10bca6c35628be47a
         with:
           commit-message: "[${{ inputs.library_name }}] Add version ${{ inputs.github_sha }}"
           branch: "${{ inputs.library_name }}-${{ inputs.github_sha }}"
