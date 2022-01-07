@@ -1,16 +1,36 @@
 name: Keep RT alive
+
 on:
   schedule:
     # Trigger every sunday
     - cron: "* * * * 0"
+
+env:
+  CONAN_USER_HOME: /home/conan
+
+defaults:
+  run:
+    working-directory: /home/conan/conan-recipes
+
 jobs:
   keep_rt_alive:
     runs-on: ubuntu-latest
     container:
       image: conanio/gcc11-ubuntu16.04:1.44.0
-    env:
-      CONAN_USER_HOME: /home/conan
     steps:
+      - name: Upgrade Git version
+        working-directory: /home/conan
+        run: |
+          sudo apt-get update
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:git-core/ppa -y
+          sudo apt-get update
+          sudo apt-get install git -y
+
+      - uses: rodrigorodriguescosta/checkout@main  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+        with:
+          path: /home/conan/conan-recipes
+
       - name: Configure Conan
         run: |
           conan config set general.revisions_enabled=1
@@ -26,6 +46,6 @@ jobs:
       - name: Create package
         working-directory: /home/conan
         run: |
-          conan new --header keep_rt_alive/version@jgsogo/scheduled
-          conan create conanfile.py keep_rt_alive/version@jgsogo/scheduled
+          conan remove --force --remote sogo template-cpp-project/0.1.0@jgsogo/scheduled
+          conan create recipes/template-cpp-project/0.1.0@jgsogo/scheduled --build=missing --profile:host=.conan/profiles/cpp20 --profile:build=default
           conan upload --confirm --all --remote sogo keep_rt_alive/version@jgsogo/scheduled
