@@ -38,7 +38,7 @@ jobs:
       - name: Cache Conan packages
         uses: actions/cache@v2
         with:
-          key: conan-cache-${{ github.repository }}
+          key: ${{ runner.os }}-jgsogo-${{ github.event.repository.name }}
           path: /home/conan/.conan
 
       - name: Configure Conan
