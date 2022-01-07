@@ -38,7 +38,7 @@ jobs:
       - name: Cache Conan packages
         uses: actions/cache@v2
         with:
-          key: conan-cache-${{ github.repository }}
+          key: ${{ runner.os }}-jgsogo-${{ github.event.repository.name }}
           path: /home/conan/.conan
 
       - name: Configure Conan
@@ -53,10 +53,9 @@ jobs:
           conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
           conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
-      #- name: Copy configuration to cache
-      #  run: |
-      #    cp -r .conan/profiles /home/conan/.conan
-      #    conan profile list
+      - name: Copy settings to cache
+        run: |
+          cp .conan/settings.yml /home/conan/.conan/settings.yml
 
       - name: Export all recipes
         run: |

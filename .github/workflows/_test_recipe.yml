@@ -67,7 +67,11 @@ jobs:
       - name: Connect to remote
         run: |
           conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
-          
+
+      - name: Copy settings to cache
+        run: |
+          cp conan-recipes/.conan/settings.yml /home/conan/.conan/settings.yml
+
       - name: Add version to conandata.yml
         run: |
             echo "  \"${{ github.sha }}\":" >> conan-recipes/recipes/${{ inputs.library_name }}/all/conandata.yml
