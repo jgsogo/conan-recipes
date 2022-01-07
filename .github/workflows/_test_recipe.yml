@@ -1,6 +1,6 @@
 ---
 # Test the recipe that belongs to a given repository
-name: "Test recipe"
+name: "(Chunk) Test Conan recipe"
 
 on:
   workflow_call:

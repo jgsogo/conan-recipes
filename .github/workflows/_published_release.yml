@@ -1,6 +1,6 @@
 ---
 # To be triggered on release published. It will create a PR with the new version
-name: "Published Release"
+name: "(Chunk) Published Release"
 
 on:
   workflow_call:
