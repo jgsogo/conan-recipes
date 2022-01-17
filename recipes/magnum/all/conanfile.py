@@ -277,7 +277,7 @@ class MagnumConan(ConanFile):
 
         if self.options.sdl2_application and self.settings.os != "Emscripten":
             self.requires("sdl/2.0.16")
-            self.requires("libalsa/1.2.5.1", overrides=True)
+            self.requires("libalsa/1.2.5.1", override=True)
 
     def build_requirements(self):
         self.build_requires("corrade/{}".format(self.version))
