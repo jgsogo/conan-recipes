@@ -55,9 +55,6 @@ class RenderContextConan(ConanFile):
         self.requires("magnum-integration/2020.06")
         self.requires("catch2/2.13.7")
 
-        # Some overrides
-        self.requires("libalsa/1.2.5.1")
-
     def _configure_cmake(self):
         if self._cmake:
             return self._cmake
