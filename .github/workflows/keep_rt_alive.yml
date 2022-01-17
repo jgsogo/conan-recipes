@@ -2,8 +2,8 @@ name: Keep RT alive
 
 on:
   schedule:
-    # Trigger every sunday
-    - cron: "* * * * 0"
+    # Trigger every sunday at 9:00
+    - cron: "0 9 * * 0"
 
 env:
   CONAN_USER_HOME: /home/conan
