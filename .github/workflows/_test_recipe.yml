@@ -34,6 +34,8 @@ jobs:
       image: ${{ inputs.docker_image }}
     env:
       CONAN_USER_HOME: /home/conan
+      CONAN_SYSREQUIRES_MODE: enabled
+      CONAN_PRINT_RUN_COMMANDS: 1
     steps:
       - name: Check out repository code
         uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
