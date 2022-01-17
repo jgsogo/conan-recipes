@@ -46,16 +46,17 @@ class RenderContextConan(ConanFile):
             raise ConanInvalidConfiguration("{} requires C++20, which your compiler does not support.".format(self.name))
 
     def source(self):
-        print("+"*200)
         tools.get(**self.conan_data["sources"][self.version],
                   destination=self._source_subfolder, strip_root=True)
 
     def requirements(self):
-        print("*"*200)
         self.requires("imgui/cci.20211117+docking@jgsogo/stable")
         self.requires("magnum/2020.06")
         self.requires("magnum-integration/2020.06")
         self.requires("catch2/2.13.7")
+
+        # Some overrides
+        self.requires("libalsa/1.2.5.1")
 
     def _configure_cmake(self):
         if self._cmake:
