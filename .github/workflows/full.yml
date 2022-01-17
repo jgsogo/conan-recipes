@@ -43,7 +43,7 @@ jobs:
 
       - name: Connect to remote
         run: |
-          conan remote add sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
+          conan remote add -i 0 sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
           conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
       - name: Copy settings to cache
