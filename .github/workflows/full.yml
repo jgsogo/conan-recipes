@@ -20,17 +20,8 @@ jobs:
   build_all_recipes:
     runs-on: ubuntu-latest
     container:
-      image: conanio/gcc11-ubuntu16.04:1.44.0
+      image: conanio/gcc10:1.43.3  # TODO: Use new docker images (gcc10)
     steps:
-      - name: Upgrade Git version
-        working-directory: /home/conan
-        run: |
-          sudo apt-get update
-          sudo apt-get install software-properties-common -y
-          sudo add-apt-repository ppa:git-core/ppa -y
-          sudo apt-get update
-          sudo apt-get install git -y
-
       - uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
         with:
           path: /home/conan/conan-recipes
