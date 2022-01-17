@@ -59,7 +59,8 @@ jobs:
       - name: Build all recipes
         run: |
           for profile in .conan/profiles/* ; do
-            for d in recipes/* ; do
+            pushd recipes
+            for d in * ; do
               python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
                 echo "****************************************"
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
@@ -69,6 +70,7 @@ jobs:
                 conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default
               done
             done
+            popd
           done
 
       - name: Upload to remote
