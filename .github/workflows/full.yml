@@ -11,6 +11,8 @@ on:
 
 env:
   CONAN_USER_HOME: /home/conan
+  CONAN_SYSREQUIRES_MODE: enabled
+  CONAN_PRINT_RUN_COMMANDS: 1
 
 defaults:
   run:
