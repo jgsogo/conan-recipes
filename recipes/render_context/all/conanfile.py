@@ -51,7 +51,7 @@ class RenderContextConan(ConanFile):
 
     def requirements(self):
         self.requires("imgui/cci.20211117+docking@jgsogo/stable")
-        self.requires("magnum/2020.06")
+        self.requires("magnum/2020.06@jgsogo/stable")
         self.requires("magnum-integration/2020.06")
         self.requires("catch2/2.13.7")
 
