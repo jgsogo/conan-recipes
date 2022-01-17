@@ -3,6 +3,7 @@ from conans.errors import ConanInvalidConfiguration
 
 
 class BaseConanfile(object):
+    url = "https://github.com/jgsogo/conan-recipes"
     settings = "os", "arch", "compiler", "build_type"
 
     @property
