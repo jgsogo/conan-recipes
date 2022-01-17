@@ -1,0 +1,4 @@
+sources:
+  v0.1.0:
+    sha256: a177d9467073994ef9c17712fb7e1b5fc4c25f918d2d8c4b5f39cff8dde41f64
+    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.1.0.tar.gz
