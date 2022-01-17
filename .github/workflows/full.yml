@@ -66,8 +66,8 @@ jobs:
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default
-                conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default
+                conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
+                conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
               done
             done
           done
