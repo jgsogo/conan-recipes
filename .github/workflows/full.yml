@@ -62,9 +62,11 @@ jobs:
             for d in recipes/* ; do
               python .github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
                 echo "****************************************"
-                echo "conan create \"$d/$folder/conanfile.py\" $version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
+                echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
+                echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                conan create "$d/$folder/conanfile.py" $version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default
+                conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default
+                conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default
               done
             done
           done
