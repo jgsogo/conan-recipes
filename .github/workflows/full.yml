@@ -70,6 +70,7 @@ jobs:
                 conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
               done
             done
+            cd ..
           done
 
       - name: Upload to remote
