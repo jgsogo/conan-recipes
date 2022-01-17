@@ -51,4 +51,4 @@ class CompositeConan(ConanFile):
 
     def package(self):
         self.copy("*.hpp", dst="include", src=os.path.join(self._source_subfolder, "src"))
-        #self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
+        self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
