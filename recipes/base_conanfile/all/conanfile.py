@@ -1,3 +1,4 @@
+import os
 from conans import ConanFile, tools
 from conans.errors import ConanInvalidConfiguration
 
@@ -36,6 +37,11 @@ class BaseConanfile(object):
     def source(self):
         tools.get(**self.conan_data["sources"][self.version],
                   destination=self._source_subfolder, strip_root=True)
+
+    def package(self):
+        self.copy("*.h", dst="include", src=os.path.join(self._source_subfolder, "src"))
+        self.copy("*.hpp", dst="include", src=os.path.join(self._source_subfolder, "src"))
+        self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
 
 
 class PyReq(ConanFile):
