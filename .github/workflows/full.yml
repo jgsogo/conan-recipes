@@ -96,7 +96,7 @@ jobs:
               echo "****************************************" 
               jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
                 ref_unquoted=$(echo $reference | sed 's/\"//g')
-                ref_usable=$(echo $ref_unquoted | sed 's/.*@.*/&@/')
+                ref_usable=$(echo $ref_unquoted | sed '/@/!s/.*/&@/g')
                 echo $ref_usable
               done
             done
