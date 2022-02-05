@@ -24,7 +24,15 @@ jobs:
     container:
       image: conanio/gcc10:1.43.3  # TODO: Use new docker images (gcc10)
     steps:
-      - uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+
+      - name: Install jq
+        working-directory: /home/conan
+        run: |
+          sudo apt-get update
+          sudo apt-get install jq -y
+
+      - name: Check out repository code
+        uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
         with:
           path: /home/conan/conan-recipes
 
