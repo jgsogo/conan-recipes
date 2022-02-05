@@ -77,7 +77,7 @@ jobs:
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=../$d-$version.json
+                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=../$d-$version-$profile.json
                 conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
                 conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
               done
@@ -89,15 +89,18 @@ jobs:
         # Upload only the packages that were built (they should be only ones in _host_ context)
         if: github.ref == 'refs/heads/master'
         run: |
-          cd recipes
-          for d in * ; do
-            python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
-              jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
-                ref_unquoted=$(echo $reference | sed 's/\"//g')
-                ref_usable=$(echo $ref_unquoted | sed '/@/!s/.*/&@/g')
-                conan upload --confirm --parallel --all --remote sogo $ref_usable
+          for profile in .conan/profiles/* ; do
+            cd recipes
+            for d in * ; do
+              python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
+                jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version-$profile.json | while read -r reference ; do
+                  ref_unquoted=$(echo $reference | sed 's/\"//g')
+                  ref_usable=$(echo $ref_unquoted | sed '/@/!s/.*/&@/g')
+                  conan upload --confirm --parallel --all --remote sogo $ref_usable
+                done
               done
             done
+            cd ..
           done
           
       - name: Clean cache
