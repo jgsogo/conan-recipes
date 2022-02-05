@@ -69,8 +69,8 @@ jobs:
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=$d-$version.json
-                cat $d-$version.json
+                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=../$d-$version.json
+                cat ../$d-$version.json
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default"
                 echo "conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default"
               done
@@ -85,7 +85,7 @@ jobs:
             echo "****************************************"
             echo ""
             echo "****************************************" 
-            jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' $d-$version.json | while read -r reference ; do
+            jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
               ref_unquoted=$(echo $reference | sed 's/\"//g')
               ref_usable=$(echo $ref_unquoted | sed 's/.*@.*/&@/')
               echo $ref_usable
