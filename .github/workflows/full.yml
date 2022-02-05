@@ -24,7 +24,15 @@ jobs:
     container:
       image: conanio/gcc10:1.43.3  # TODO: Use new docker images (gcc10)
     steps:
-      - uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+
+      - name: Install jq
+        working-directory: /home/conan
+        run: |
+          sudo apt-get update
+          sudo apt-get install jq -y
+
+      - name: Check out repository code
+        uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
         with:
           path: /home/conan/conan-recipes
 
@@ -65,9 +73,11 @@ jobs:
             for d in * ; do
               python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
                 echo "****************************************"
+                echo "folder: $folder, name: $d, version: $version"
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
+                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=../$d-$version.json
                 conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
                 conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
               done
@@ -75,11 +85,21 @@ jobs:
             cd ..
           done
 
-      - name: Upload to remote
+      - name: Upload only packages built
+        # Upload only the packages that were built (they should be only ones in _host_ context)
         if: github.ref == 'refs/heads/master'
         run: |
-          conan upload --confirm --parallel --all --remote sogo "*"
-
+          cd recipes
+          for d in * ; do
+            python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
+              jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
+                ref_unquoted=$(echo $reference | sed 's/\"//g')
+                ref_usable=$(echo $ref_unquoted | sed '/@/!s/.*/&@/g')
+                conan upload --confirm --parallel --all --remote sogo $ref_usable
+              done
+            done
+          done
+          
       - name: Clean cache
         run: |
           conan remove "*" --builds --force
