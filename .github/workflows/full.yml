@@ -94,7 +94,7 @@ jobs:
                 echo "\n\n"
                 echo "****************************************"
                 echo "****************************************"
-                cat ../$d-$version.json
+                cat ../$d-$version-$profile.json
                 echo ""
                 echo "****************************************"
                 jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version-$profile.json | while read -r reference ; do
