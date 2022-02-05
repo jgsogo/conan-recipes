@@ -41,10 +41,10 @@ jobs:
           conan --version
           conan config home
 
-      - name: Connect to remote
-        run: |
-          conan remote add -i 0 sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
-          conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
+      #- name: Connect to remote
+      #  run: |
+      #    conan remote add -i 0 sogo https://sogo.jfrog.io/artifactory/api/conan/conan-center
+      #    conan user -r sogo -p ${{secrets.RT_TOKEN}} ${{secrets.RT_USERNAME}}
 
       - name: Copy settings to cache
         run: |
@@ -68,17 +68,20 @@ jobs:
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
-                conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
+                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=$d.json
+                cat $d.json
+                echo conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
+                echo conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
               done
             done
             cd ..
           done
 
-      - name: Upload to remote
-        if: github.ref == 'refs/heads/master'
-        run: |
-          conan upload --confirm --parallel --all --remote sogo "*"
+      #- name: Upload to remote
+      #  # Upload only the packages that were built (they should be only ones in _host_ context)
+      #  if: github.ref == 'refs/heads/master'
+      #  run: |
+      #    conan upload --confirm --parallel --all --remote sogo "*"
 
       - name: Clean cache
         run: |
