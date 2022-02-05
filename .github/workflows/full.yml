@@ -77,7 +77,7 @@ jobs:
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=../$d-$version.json
+                conan info $d/$version@jgsogo/stable --dry-build --profile:host=../$profile --profile:build=default --json=../$d-$version.json
               done
             done
             cd ..
@@ -90,9 +90,11 @@ jobs:
           cd recipes
           for d in * ; do
             python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
+              echo "\n\n"
               echo "****************************************"
               echo "****************************************"
               cat ../$d-$version.json
+              echo ""
               echo "****************************************"
               jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
                 ref_unquoted=$(echo $reference | sed 's/\"//g')
