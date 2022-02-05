@@ -81,14 +81,16 @@ jobs:
       - name: Upload only packages built
         run: |
           cd recipes
-          python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
-            echo "****************************************"
-            echo ""
-            echo "****************************************" 
-            jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
-              ref_unquoted=$(echo $reference | sed 's/\"//g')
-              ref_usable=$(echo $ref_unquoted | sed 's/.*@.*/&@/')
-              echo $ref_usable
+          for d in * ; do
+            python ../.github/scripts/parse_config_yml.py $d/config.yml | while read -r folder version ; do 
+              echo "****************************************"
+              echo ""
+              echo "****************************************" 
+              jq '.[] | select( .context=="host") | select( .binary=="Missing") | .reference' ../$d-$version.json | while read -r reference ; do
+                ref_unquoted=$(echo $reference | sed 's/\"//g')
+                ref_usable=$(echo $ref_unquoted | sed 's/.*@.*/&@/')
+                echo $ref_usable
+              done
             done
           done
           
