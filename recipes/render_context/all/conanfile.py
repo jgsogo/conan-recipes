@@ -13,11 +13,6 @@ class RenderContextConan(ConanFile):
     topics = ("cpp20", "magnum", "imgui")
     license = "MIT"
 
-    exports_sources = ["CMakeLists.txt",]
-    generators = "cmake", "cmake_find_package"
-
-    _cmake = None
-
     def validate(self):
         self._validate_cppstd("20")
 

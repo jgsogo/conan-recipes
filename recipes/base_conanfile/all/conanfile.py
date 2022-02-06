@@ -1,4 +1,5 @@
 import os
+import shutil
 from conans import ConanFile, tools, CMake
 from conans.errors import ConanInvalidConfiguration
 
@@ -7,6 +8,7 @@ class BaseCMakeConanfile(object):
     url = "https://github.com/jgsogo/conan-recipes"
     settings = "os", "arch", "compiler", "build_type"
 
+    generators = "cmake", "cmake_find_package"
     _cmake = None
 
     @property
@@ -39,6 +41,8 @@ class BaseCMakeConanfile(object):
     def source(self):
         tools.get(**self.conan_data["sources"][self.version],
                   destination=self._source_subfolder, strip_root=True)
+        cmakelists_filename = os.path.join(self.python_requires["base_conanfile"].path, "CMakeLists.txt")
+        shutil.copyfile(cmakelists_filename, os.path.join(self.source_folder, "CMakeLists.txt"))
 
     def _configure_cmake(self):
         if self._cmake:
@@ -60,3 +64,4 @@ class BaseCMakeConanfile(object):
 
 class PyReq(ConanFile):
     name = "base_conanfile"
+    exports = ["CMakeLists.txt",]
