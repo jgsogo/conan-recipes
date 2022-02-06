@@ -5,6 +5,7 @@
 #include "render/imgui/context.h"
 
 using namespace math::units;
+using namespace render::imgui::units;
 
 int main()
 {
@@ -28,7 +29,7 @@ int main()
 
     // Draw circle
     Vector2Mm center{0_mm, 0_mm};
-    context.drawCircle(center, 10_mm, IM_COL32_BLACK, 2_px);
+    context.drawCircle(center, 10_mm, IM_COL32_BLACK, 2_impx);
 
     ImGui::DestroyContext();
 }
