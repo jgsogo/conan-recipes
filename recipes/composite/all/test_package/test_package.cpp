@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "tree/tree_composite.hpp"
+#include "composite/tree/tree_composite.hpp"
 
 namespace {
 
