@@ -1,9 +1,9 @@
 import os
-from conans import ConanFile, tools
+from conans import ConanFile, tools, CMake
 from conans.errors import ConanInvalidConfiguration
 
 
-class BaseConanfile(object):
+class BaseCMakeConanfile(object):
     url = "https://github.com/jgsogo/conan-recipes"
     settings = "os", "arch", "compiler", "build_type"
 
@@ -38,9 +38,21 @@ class BaseConanfile(object):
         tools.get(**self.conan_data["sources"][self.version],
                   destination=self._source_subfolder, strip_root=True)
 
+    def _configure_cmake(self):
+        if self._cmake:
+            return self._cmake
+        self._cmake = CMake(self)
+        self._cmake.definitions["BUILD_TESTS"] = False
+        self._cmake.configure()
+        return self._cmake
+
+    def build(self):
+        cmake = self._configure_cmake()
+        cmake.build()
+
     def package(self):
-        self.copy("*.h", dst="include", src=os.path.join(self._source_subfolder, "src"))
-        self.copy("*.hpp", dst="include", src=os.path.join(self._source_subfolder, "src"))
+        cmake = self._configure_cmake()
+        cmake.install()
         self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
 
 
