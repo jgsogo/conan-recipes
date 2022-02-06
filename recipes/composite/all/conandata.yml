@@ -1,7 +1,4 @@
 sources:
-  v0.1.0:
-    sha256: 2d14f9da660b3cc8d9f5f971b32dd842116f52aeccc674823d0936faab95ec76
-    url: https://github.com/jgsogo/composite/archive/refs/tags/v0.1.0.tar.gz
   v0.2.0:
     sha256: f401d6404d6a5e9ebdb55b7844807958809ef14a91d79446e87488b32de4755a
     url: https://github.com/jgsogo/composite/archive/refs/tags/v0.2.0.tar.gz
