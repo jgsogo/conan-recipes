@@ -58,4 +58,3 @@ class BaseCMakeConanfile(object):
 
 class PyReq(ConanFile):
     name = "base_conanfile"
-    version = "v0.1.0"
