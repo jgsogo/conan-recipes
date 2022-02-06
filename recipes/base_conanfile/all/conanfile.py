@@ -7,6 +7,8 @@ class BaseCMakeConanfile(object):
     url = "https://github.com/jgsogo/conan-recipes"
     settings = "os", "arch", "compiler", "build_type"
 
+    _cmake = None
+
     @property
     def _compilers_minimum_version(self):
         return {"20": {
