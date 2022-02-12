@@ -24,4 +24,4 @@ class RenderContextConan(ConanFile):
     def package_info(self):
         self.cpp_info.defines.append("IMGUI_USER_CONFIG=\"{}\"".format(str(os.path.join(self.package_folder, "include", "render", "imgui", "imconfig.h"))))
         self.cpp_info.libs = ['units', 'render_imgui']
-        self.cpp_info.requires = ['magnum::magnum', 'imgui::imgui', 'magnum-integration::magnum-integration']
+        self.cpp_info.requires = ['magnum::magnum_main', 'imgui::imgui', 'magnum-integration::imgui']
