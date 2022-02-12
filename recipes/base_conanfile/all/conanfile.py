@@ -48,6 +48,7 @@ class BaseCMakeConanfile(object):
         if self._cmake:
             return self._cmake
         self._cmake = CMake(self)
+        self._cmake.definitions["CONAN_CMAKE_SILENT_OUTPUT"] = True
         self._cmake.definitions["BUILD_TESTS"] = False
         self._cmake.configure()
         return self._cmake
@@ -60,6 +61,22 @@ class BaseCMakeConanfile(object):
         cmake = self._configure_cmake()
         cmake.install()
         self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
+
+
+class BaseCMakeTestPackageConanfile(object):
+    settings = "os", "compiler", "build_type", "arch"
+    generators = "cmake", "cmake_find_package"
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.definitions["CONAN_CMAKE_SILENT_OUTPUT"] = True
+        cmake.configure()
+        cmake.build()
+
+    def test(self):
+        if not tools.cross_building(self):
+            bin_path = os.path.join("bin", "test_package")
+            self.run(bin_path, run_environment=True)
 
 
 class PyReq(ConanFile):
