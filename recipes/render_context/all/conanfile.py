@@ -20,7 +20,8 @@ class RenderContextConan(ConanFile):
         self.requires("imgui/cci.20211117+docking@jgsogo/stable")
         self.requires("magnum/2020.06@jgsogo/stable")
         self.requires("magnum-integration/2020.06")
-        self.requires("catch2/2.13.7")
 
     def package_info(self):
         self.cpp_info.defines.append("IMGUI_USER_CONFIG=\"{}\"".format(str(os.path.join(self.package_folder, "include", "render", "imgui", "imconfig.h"))))
+        self.cpp_info.libs = ['units', 'render_imgui']
+        self.cpp_info.requires = ['magnum::magnum', 'imgui::imgui', 'magnum-integration::magnum-integration']
