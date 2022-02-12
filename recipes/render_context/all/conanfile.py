@@ -1,5 +1,5 @@
 import os
-from conans import ConanFile
+from conans import ConanFile, tools
 
 required_conan_version = ">=1.33.0"
 
@@ -20,7 +20,13 @@ class RenderContextConan(ConanFile):
         self.requires("imgui/cci.20211117+docking@jgsogo/stable")
         self.requires("magnum/2020.06@jgsogo/stable")
         self.requires("magnum-integration/2020.06")
-        self.requires("catch2/2.13.7")
 
     def package_info(self):
         self.cpp_info.defines.append("IMGUI_USER_CONFIG=\"{}\"".format(str(os.path.join(self.package_folder, "include", "render", "imgui", "imconfig.h"))))
+        self.cpp_info.requires = ['magnum::magnum_main', 'imgui::imgui', 'magnum-integration::imgui']
+        if tools.Version(self.version) >= "0.2.5":
+            self.cpp_info.libs = ['units', 'render_imgui']
+
+    def package_id(self):
+        if tools.Version(self.version) < "0.2.5":
+            self.info.header_only()
