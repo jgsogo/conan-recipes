@@ -17,3 +17,6 @@ sources:
   v0.2.6:
     sha256: 2d34b9c5182d69462ab5e6d730c2b861cfad4df2b1fa5e7453f5ad4fafcf7842
     url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.6.tar.gz
+  v0.2.7:
+    sha256: efe022cecd034b8f34378c5ea330b169d2761e04b4b3b202a9c0edc099b1ae49
+    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.7.tar.gz
