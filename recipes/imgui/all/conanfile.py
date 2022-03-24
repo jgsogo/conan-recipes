@@ -16,10 +16,12 @@ class IMGUIConan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
+        "add_misc": [True, False],  # There are some utilities in the `misc` subdirectory
     }
     default_options = {
         "shared": False,
         "fPIC": True,
+        "add_misc": True,
     }
 
     exports_sources = "CMakeLists.txt"
@@ -52,6 +54,7 @@ class IMGUIConan(ConanFile):
         if self._cmake:
             return self._cmake
         self._cmake = CMake(self)
+        self._cmake.definitions["ADD_MISC"] = self.options.add_misc
         self._cmake.configure()
         return self._cmake
 
