@@ -7,6 +7,7 @@ class TestPackageConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        cmake.definitions["ADD_MISC"] = self.options["imgui"].add_misc
         cmake.configure()
         cmake.build()
 

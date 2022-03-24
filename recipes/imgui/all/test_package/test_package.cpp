@@ -1,5 +1,8 @@
 #include <imgui.h>
 #include <stdio.h>
+#if ADD_MISC
+#include <misc/cpp/imgui_stdlib.h>
+#endif
 
 int main(int, char**)
 {
@@ -27,6 +30,11 @@ int main(int, char**)
         ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         ImGui::ShowDemoWindow(NULL);
+
+#if ADD_MISC
+        std::string text = "text";
+        ImGui::InputText("label", &text);
+#endif
 
         ImGui::Render();
     }

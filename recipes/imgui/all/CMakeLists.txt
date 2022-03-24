@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 project(imgui CXX)
 
 include(conanbuildinfo.cmake)
-conan_basic_setup()
+conan_basic_setup(TARGETS)
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source_subfolder)
 set(MISC_DIR ${SOURCE_DIR}/misc)
@@ -14,6 +14,10 @@ file(GLOB HEADER_FILES ${SOURCE_DIR}/*.h)
 file(GLOB EXTRA_FONTS_FILES ${EXTRA_FONTS_DIR}/*.ttf)
 if (MSVC)
     file(GLOB EXTRA_NATVIS_FILES ${MISC_DIR}/natvis/*.natvis)
+endif()
+
+if (ADD_MISC)
+    set(SOURCE_FILES ${SOURCE_FILES} ${MISC_DIR}/cpp/imgui_stdlib.cpp)
 endif()
 
 set(BINARY_TO_COMPRESSED_BIN binary_to_compressed_c)
@@ -48,6 +52,11 @@ install(TARGETS ${BINARY_TO_COMPRESSED_BIN}
 install(FILES ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/${IMGUI_EXPORT_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ)
+if (ADD_MISC)
+    install(FILES ${MISC_DIR}/cpp/imgui_stdlib.h
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/misc/cpp/
+            PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ)
+endif()
 install(FILES ${EXTRA_FONTS_FILES}
         DESTINATION ${CMAKE_INSTALL_PREFIX}/res/fonts
         PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ)

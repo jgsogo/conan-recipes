@@ -9,3 +9,6 @@ find_package(imgui REQUIRED)
 
 add_executable(${PROJECT_NAME} test_package.cpp)
 target_link_libraries(${PROJECT_NAME} imgui::imgui)
+if (ADD_MISC)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE -DADD_MISC)
+endif()
