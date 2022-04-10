@@ -77,9 +77,8 @@ jobs:
                 echo "conan install $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "conan test \"$d/$folder/test_package/conanfile.py\" $d/$version@jgsogo/stable --build=missing --profile:host=$profile --profile:build=default"
                 echo "****************************************"
-                allow() { ok=",$1," ; shift ; "$@" ; [[ "$ok" = *,$?,*  ]] ; }
                 conan info $d/$version@jgsogo/stable --profile:host=../$profile --profile:build=default --json=../$d-$version-$profile.json
-                allow 0,6 conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
+                conan install $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default || (($?==6 ? 1 : 0))
                 conan test "$d/$folder/test_package/conanfile.py" $d/$version@jgsogo/stable --build=missing --profile:host=../$profile --profile:build=default
               done
             done
