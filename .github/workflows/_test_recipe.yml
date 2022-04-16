@@ -8,7 +8,7 @@ on:
       docker_image:
         type: string
         required: false
-        default: conanio/gcc10:1.43.3  # TODO: Use new docker images (gcc10)
+        default: conanio/gcc11-ubuntu16.04:1.46.2
       repository:
         type: string
         required: true
