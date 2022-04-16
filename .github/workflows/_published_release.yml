@@ -1,5 +1,5 @@
 ---
-# To be triggered on release published. It will create a PR with the new version
+# To be triggered on release published. It will create a PR to this repository adding the new version
 name: "(Chunk) Published Release"
 
 on:
