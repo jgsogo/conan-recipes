@@ -13,12 +13,19 @@ class DrawablesConan(ConanFile):
     topics = ("cpp20", "parser",)
     license = "MIT"
 
+    default_options = {
+        'magnum-plugins:shared_plugins': False,
+    }
+
     def validate(self):
         self._validate_cppstd("20")
 
     def requirements(self):
-        self.require("render_context/v0.2.9@jgsogo/stable")
-        self.require("rapidxml/1.13")
+        self.requires("render_context/v0.2.9@jgsogo/stable")
+        self.requires("rapidxml/1.13")
+        self.requires("spdlog/1.9.2")
+        self.requires("magnum-plugins/2020.06")
+        self.requires("magnum/2020.06@jgsogo/stable", override=True)
 
     def package_info(self):
-        self.cpp_info.requires = ['render_context::render_context', 'rapidxml::rapidxml']
+        self.cpp_info.requires = ['render_context::render_context', 'rapidxml::rapidxml', 'spdlog::spdlog']

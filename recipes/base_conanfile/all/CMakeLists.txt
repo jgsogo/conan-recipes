@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 project(wrapper CXX)
 
-include(conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 add_subdirectory(source_subfolder)
