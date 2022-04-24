@@ -28,4 +28,4 @@ class DrawablesConan(ConanFile):
         self.requires("magnum/2020.06@jgsogo/stable", override=True)
 
     def package_info(self):
-        self.cpp_info.requires = ['render_context::render_context', 'rapidxml::rapidxml', 'spdlog::spdlog']
+        self.cpp_info.requires = ['render_context::render_context', 'rapidxml::rapidxml', 'spdlog::spdlog', 'magnum-plugins::magnum-plugins']
