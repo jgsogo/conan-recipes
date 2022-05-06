@@ -1,4 +1,7 @@
 sources:
-  "0.1.0":
-    url: "https://github.com/jgsogo/template-cpp-project/archive/fccbc90b77594543d9433f6f4a1dc65769c9a4f7.zip"
-    sha256: "f1c939f1f0ee52e291cd6fee1c1b8c610709c93775d11fdda66dbf1ec7db67c2"
+  0.1.0:
+    sha256: f1c939f1f0ee52e291cd6fee1c1b8c610709c93775d11fdda66dbf1ec7db67c2
+    url: https://github.com/jgsogo/template-cpp-project/archive/fccbc90b77594543d9433f6f4a1dc65769c9a4f7.zip
+  v0.2.0:
+    sha256: cb4c4dc9c7f42cc978d7a79ce9469a429ec7414ec74b2907d371758ab771338c
+    url: https://github.com/jgsogo/template-cpp-project/archive/refs/tags/v0.2.0.tar.gz
