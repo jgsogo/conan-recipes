@@ -2,3 +2,6 @@ sources:
   v0.1.0:
     sha256: 736842f600313de0d96efe393e3023feef03940db7bce53bff385374850ec583
     url: https://github.com/jgsogo/drawables/archive/refs/tags/v0.1.0.tar.gz
+  v0.1.1:
+    sha256: 5f3b523226aec77ec818c9a9c05afc1dcaa84e9e8c96d062ae9685cce1d3bbf0
+    url: https://github.com/jgsogo/drawables/archive/refs/tags/v0.1.1.tar.gz
