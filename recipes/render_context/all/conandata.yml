@@ -1,28 +1,4 @@
 sources:
-  v0.2.1:
-    sha256: b569bba7d0e7599539b323e7f8b730ccb2082c62a703ce2be3ed87090aacf3b4
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.1.tar.gz
-  v0.2.2:
-    sha256: 16e3ae93432b0b74c5c48aeb91988ec72fe2b4a5f1fe4705efdf15f72080df4d
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.2.tar.gz
-  v0.2.3:
-    sha256: 4a3f956bb67d47069cf3101b9e3361366fa094836df20c983096e933bce92d12
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.3.tar.gz
-  v0.2.4:
-    sha256: 00599f9d831b716245bfa5fcf1cb212e0c16cd463bbc563d90fc2109e1df2880
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.4.tar.gz
-  v0.2.5:
-    sha256: 4426e5ed5ec68d6374959e116431c453e329bb8164053e5f270e57f8bd5d7602
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.5.tar.gz
-  v0.2.6:
-    sha256: 2d34b9c5182d69462ab5e6d730c2b861cfad4df2b1fa5e7453f5ad4fafcf7842
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.6.tar.gz
-  v0.2.7:
-    sha256: efe022cecd034b8f34378c5ea330b169d2761e04b4b3b202a9c0edc099b1ae49
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.7.tar.gz
-  v0.2.8:
-    sha256: 4a0ce0205fc76bdbedcff1997cff8e1a6c25d5ee397b4d09de687cb3cf41163c
-    url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.8.tar.gz
   v0.2.9:
     sha256: 62e15a2e65b8ee2bed9f926766a9e312cdf866f84006ccdfc882b6ed6cdc6a19
     url: https://github.com/jgsogo/render_context/archive/refs/tags/v0.2.9.tar.gz
